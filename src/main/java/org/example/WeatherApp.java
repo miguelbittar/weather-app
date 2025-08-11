@@ -14,14 +14,20 @@ public class WeatherApp {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter city name: ");
+        System.out.print("Enter city name: ");
         String city = scanner.nextLine();
 
         System.out.println("You entered: " + city);
 
         try {
             String weatherData = getWeatherData(city);
-            System.out.println(weatherData);
+
+            //Code 1006 means location not found
+            if (weatherData.contains("\"code\":1006")) {
+                System.out.println("Location not found. Please try again.");
+            } else {
+                printWeatherData(weatherData);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -39,21 +45,27 @@ public class WeatherApp {
         return response.body();
     }
 
+    // Method to print weather data in an organized way
     public static void printWeatherData(String data) {
         JSONObject jsonData = new JSONObject(data);
         JSONObject currentWeather = jsonData.getJSONObject("current");
 
+        // Extract location data
         String city = jsonData.getJSONObject("location").getString("name");
         String country = jsonData.getJSONObject("location").getString("country");
-        String weatherCondition = currentWeather.getJSONObject("condition").getString("text");
 
+        // Extract weather data
+        String weatherCondition = currentWeather.getJSONObject("condition").getString("text");
         int humidity = currentWeather.getInt("humidity");
         float windSpeed = currentWeather.getFloat("wind_kph");
         float atmosphericPressure = currentWeather.getFloat("pressure_mb");
         float feelsLike = currentWeather.getFloat("feelslike_c");
         float currentTemperature = currentWeather.getFloat("temp_c");
+
+        // Extract date and time from API response
         String lastUpdated = currentWeather.getString("last_updated");
 
+        // Print current weather information
         System.out.println("Weather Information for " + city + ", " + country);
         System.out.println("Last Updated: " + lastUpdated);
         System.out.println("Current Temperature: " + currentTemperature + "°C");
