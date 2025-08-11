@@ -1,5 +1,5 @@
 package org.example;
-import java.io.File;
+import org.json.JSONObject;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -38,6 +38,36 @@ public class WeatherApp {
 
         return response.body();
     }
+
+    public static void printWeatherData(String data) {
+        JSONObject jsonData = new JSONObject(data);
+        JSONObject currentWeather = jsonData.getJSONObject("current");
+
+        String city = jsonData.getJSONObject("location").getString("name");
+        String country = jsonData.getJSONObject("location").getString("country");
+        String weatherCondition = currentWeather.getJSONObject("condition").getString("text");
+
+        int humidity = currentWeather.getInt("humidity");
+        float windSpeed = currentWeather.getFloat("wind_kph");
+        float atmosphericPressure = currentWeather.getFloat("pressure_mb");
+        float feelsLike = currentWeather.getFloat("feelslike_c");
+        float currentTemperature = currentWeather.getFloat("temp_c");
+        String lastUpdated = currentWeather.getString("last_updated");
+
+        System.out.println("Weather Information for " + city + ", " + country);
+        System.out.println("Last Updated: " + lastUpdated);
+        System.out.println("Current Temperature: " + currentTemperature + "°C");
+        System.out.println("Feels Like: " + feelsLike + "°C");
+        System.out.println("Weather Condition: " + weatherCondition);
+        System.out.println("Humidity: " + humidity + "%");
+        System.out.println("Wind Speed: " + windSpeed + " km/h");
+        System.out.println("Atmospheric Pressure: " + atmosphericPressure + " mb");
+
+    }
+
+
+
+
 
 
 
