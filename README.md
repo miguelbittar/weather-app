@@ -75,14 +75,13 @@ weather-app/
 ```
 
 ## Error Handling
-
 The application handles:
-- City not found errors (error code 1006)
-- API connection issues
-- JSON parsing errors
+- Invalid city names (error code 1006)  
+- General exceptions with error messages
 
 ## Limitations
 
 - Requires internet connection
 - Limited by WeatherAPI free tier quotas
 - Displays current weather only (no forecasts)
+
